@@ -18,6 +18,7 @@ app = Dash(
     title=APP_TITLE,
     use_pages=True,
 )
+server=app.server
 
 # Define the app layout
 app.layout = dcc.Loading(
