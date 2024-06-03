@@ -92,7 +92,7 @@ def layout():
             ], width=6)
         ])
     ], fluid=True, style={
-        'height': 'calc(180vh - 60px)',
+        'height': 'calc(120vh - 60px)',
         'width': '100%',
         'borderRadius': 6
     })
@@ -129,7 +129,13 @@ def update_map(data, geojson_data):
     selected_value = filtered_df.columns[-1]
 
     # Create a histogram
-    fig = px.histogram(filtered_df, x='continent', y=selected_value, histfunc='avg', height=450, title='Histogram')
+    fig = px.histogram(
+        filtered_df, 
+        x='continent',
+        y=selected_value, 
+        histfunc='avg', 
+        height=420,
+        title='Histogram')
 
     # Create folium map
     m = folium.Map(
