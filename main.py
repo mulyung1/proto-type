@@ -7,7 +7,7 @@ from sidebar import create_sidebar
 FA621 = 'https://use.fontawesome.com/releases/v6.2.1/css/all.css'
 appstyle = 'https://codepen.io/chriddyp/pen/bWLwgP.css'
 SIDEBAR = create_sidebar()
-APP_TITLE = 'MGC SOFWARE SOLUTIONS'
+APP_TITLE = 'MGC SOFTWARE SOLUTIONS'
 
 # Initialize the app
 app = Dash(
