@@ -145,34 +145,35 @@ def update_map(data, geojson_data):
 
     # Add multiple tile layers
     folium.TileLayer('openstreetmap').add_to(m)  # OpenStreetMap
-    folium.TileLayer('cartodbpositron').add_to(m)  # CartoDB Positron
-    infoo=folium.GeoJsonTooltip(
-            fields=['name', selected_value], 
-            aliases=['Country', selected_value], 
-            localize=True,
-            labels=True,
-            style="""
-                background-color: #F0EFEF;
-                border: 2px solid black;
-                border-radius: 3px;
-                box-shadow: 3px;
-            """,
-            max_width=800,)
+    folium.TileLayer('cartodbpositron').add_to(m)  # CartoDB Position
+    
+    #infoo=folium.GeoJsonTooltip(
+    #       fields=['name', selected_value], 
+    #        aliases=['Country', selected_value], 
+    #        localize=True,
+    #        labels=True,
+    #        style="""
+    #            background-color: #F0EFEF;
+    #            border: 2px solid black;
+    #            border-radius: 3px;
+    #            box-shadow: 3px;
+    #        """,
+    #        max_width=800,)
     
     folium.Choropleth(
         geo_data=geojson_data,
         name="choropleth",
         data=filtered_df,
-        columns=["country", selected_value],
+        columns=["country", stored_value],
         key_on="feature.properties.name",
         fill_color="YlGn",
         fill_opacity=1,
         line_opacity=0.2,
         nan_fill_color="grey", # how missing and nan values are displayed
         nan_fill_opacity=0.2,
-        legend_name=f"{selected_value} Rate",
+        legend_name=f"{stored_value} Rate",
         highlight=True,
-        tooltip=infoo,   
+        #tooltip=infoo,   
     ).add_to(m)
 
     # Add layer control to switch between tile layers
