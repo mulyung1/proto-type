@@ -1,0 +1,65 @@
+
+.landingpage {
+    /* Subtle shadow for better appearance */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    /* Padding around the content */
+    padding: 20px;
+
+    /* Background color */
+    background-color: #add8e6;
+
+    /* Rounded corners for the container */
+    border-radius: 6px;
+
+    /* Margin spacing */
+    margin-top: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+
+    /* Set width to 100% for responsive design */
+    width: 100%;
+
+    /* Adjust height dynamically */
+    height: calc(100vh - 60px);
+
+    /* Enable vertical scrolling if needed */
+    overflow-y: auto;
+
+    /* Background image */
+    background-image: url('/assets/mlima.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.sidebar-col {
+    /* Extra small screens (xs) */
+    grid-column: span 12;
+
+    /* Small screens (sm) */
+    @media (min-width: 576px) {
+        grid-column: span 12;
+    }
+
+    /* Medium screens (md) */
+    @media (min-width: 768px) {
+        grid-column: span 3;
+    }
+
+    /* Large screens (lg) */
+    @media (min-width: 992px) {
+        grid-column: span 3;
+    }
+
+    /* Extra large screens (xl) */
+    @media (min-width: 1200px) {
+        grid-column: span 2;
+    }
+
+    /* Extra extra large screens (xxl) */
+    @media (min-width: 1400px) {
+        grid-column: span 2;
+    }
+}
+
