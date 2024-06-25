@@ -71,34 +71,34 @@ def create_sidebar():
                         #         },
                         #     )
                         # ),
-                        # dbc.NavItem(
-                        #     dbc.NavLink(
-                        #         [
-                        #             html.I(className='fa-brands fa-github'), 
-                        #             'GitHub',  # text beside icon
-                        #         ],
-                        #         href='https://github.com/mulyung1',
-                        #         target='_blank_',  # applies to external links only
-                        #         style={
-                        #             # 'color': 'black',
-                        #             'fontSize': 20
-                        #         },
-                        #     )
-                        # ),
-                        # dbc.NavItem(
-                        #     dbc.NavLink(
-                        #         [
-                        #             html.I(className='fa-brands fa-medium'), 
-                        #             'Medium',  # text beside icon
-                        #         ],
-                        #         href='https://medium.com/@victorsonofmartin',
-                        #         target='_blank_',
-                        #         style={
-                        #             # 'color': 'black',
-                        #             'fontSize': 20
-                        #         },
-                        #     )
-                        # ),
+                        dbc.NavItem(
+                            dbc.NavLink(
+                                [
+                                    html.I(className='fa-brands fa-github'), 
+                                    'GitHub',  # text beside icon
+                                ],
+                                href='https://github.com/mulyung1/proto-type',
+                                target='_blank_',  # applies to external links only
+                                style={
+                                    # 'color': 'black',
+                                    'fontSize': 20
+                                },
+                            )
+                        ),
+                        dbc.NavItem(
+                            dbc.NavLink(
+                                [
+                                    html.I(className='fa-brands fa-medium'), 
+                                    'Medium',  # text beside icon
+                                ],
+                                href='https://medium.com/@victorsonofmartin',
+                                target='_blank_',
+                                style={
+                                    # 'color': 'black',
+                                    'fontSize': 20
+                                },
+                            )
+                        ),
                         dbc.DropdownMenu(
                             label='Explore by country project',
                             in_navbar=True,
