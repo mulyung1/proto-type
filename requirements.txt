@@ -3,4 +3,6 @@ pandas
 dash-bootstrap-components
 plotly
 folium
+requests
+flask_caching
 gunicorn
