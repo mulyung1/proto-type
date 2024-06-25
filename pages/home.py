@@ -1,10 +1,13 @@
-from dash import html, register_page, dcc, callback, Output, Input
+
+from dash import Dash, html, register_page, dcc, callback, Output, Input
 import dash_bootstrap_components as dbc
 import folium
 import requests
 from dash.exceptions import PreventUpdate
 import pandas as pd
 import plotly.express as px
+from cache_config import cache
+
 
 register_page(
     __name__,
@@ -17,15 +20,11 @@ register_page(
 dff = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
 df = dff[dff['continent'].isin(['Africa', 'Asia', 'Europe', 'Americas', 'Oceania'])]
 
-# Load the GeoJSON data
-geod = requests.get(
-    'https://raw.githubusercontent.com/python-visualization/folium-example-data/main/world_countries.json'
-).json()
 
+#define the app layout
 def layout():
     return dbc.Container([
-        dcc.Store(id='stored_value'),
-        dcc.Store(id='geojson_data', data=geod),
+        dcc.Store(id='signal'),
         html.H3('Data and evidence to strengthen baseline assessments, inform interventions and monitor impacts across landscapes', style={'font-weight':'bold'}),
         dbc.Row([
             dbc.Col([
@@ -90,101 +89,100 @@ def layout():
                     'boxShadow': '0 4px 8px rgba(1, 0.9, 0.8, 0.9)'
                 })
             ], width=6)
-        ])
+        ])   
     ], fluid=True, style={
         'height': 'calc(120vh - 60px)',
         'width': '100%',
-        'borderRadius': 6
-    })
+        'borderRadius': 6}
+    )
 
-# Callback to filter and store the data based on selected value
-@callback(
-    Output('stored_value','data'),
-    Input('batons', 'value')
-)
-def updateStore(selected_value):
-    if selected_value is None:
-        raise PreventUpdate
-    
-    # Data filtration/processing done here
-    # Create a new DataFrame with only columns based on user selection
-    data = df[['country', 'continent', selected_value]]
-    return data.to_dict('records')
 
-# Callback to update map and graph
-@callback(
-    Output('graf','figure'),
-    Output('map', 'srcDoc'),
-    Input('stored_value', 'data'),
-    Input('geojson_data', 'data')
-)
-def update_map(data, geojson_data):
-    if data is None or geojson_data is None:
-        raise PreventUpdate
+@cache.memoize()
+def global_store(selected_value):
+    print(f'Computing value with {selected_value}')
+    filtered_data = df[['country', 'continent', selected_value]]
+    geojson_data = requests.get(
+        'https://raw.githubusercontent.com/python-visualization/folium-example-data/main/world_countries.json'
+    ).json()
+    return filtered_data, geojson_data
 
-    # Convert the data back to a pandas DataFrame
-    filtered_df = pd.DataFrame(data)
-
-    # Get the selected value from the data columns
-    selected_value = filtered_df.columns[-1]
-
-    # Create a histogram
-    fig = px.histogram(
-        filtered_df, 
-        x='continent',
-        y=selected_value, 
-        histfunc='avg', 
-        height=420,
-        title='Histogram')
-
-    # Create folium map
+def create_choropleth_map(data, geojson_data, selected_value):
     m = folium.Map(
         location=[42.45736003202464, 15.962058394747377],
         zoom_start=1
     )
+    folium.TileLayer('openstreetmap').add_to(m)
+    folium.TileLayer('cartodbpositron').add_to(m)
 
-    # Add multiple tile layers
-    folium.TileLayer('openstreetmap').add_to(m)  # OpenStreetMap
-    folium.TileLayer('cartodbpositron').add_to(m)  # CartoDB Position
-    
-    #infoo=folium.GeoJsonTooltip(
-    #       fields=['name', selected_value], 
-    #        aliases=['Country', selected_value], 
-    #        localize=True,
-    #        labels=True,
-    #        style="""
-    #            background-color: #F0EFEF;
-    #            border: 2px solid black;
-    #            border-radius: 3px;
-    #            box-shadow: 3px;
-    #        """,
-    #        max_width=800,)
-    
     folium.Choropleth(
         geo_data=geojson_data,
         name="choropleth",
-        data=filtered_df,
-        columns=["country", stored_value],
+        data=data,
+        columns=["country", selected_value],
         key_on="feature.properties.name",
         fill_color="YlGn",
         fill_opacity=1,
         line_opacity=0.2,
-        nan_fill_color="grey", # how missing and nan values are displayed
+        nan_fill_color="grey",
         nan_fill_opacity=0.2,
-        legend_name=f"{stored_value} Rate",
+        legend_name=f"{selected_value} Rate",
         highlight=True,
-        #tooltip=infoo,   
     ).add_to(m)
-
-    # Add layer control to switch between tile layers
     folium.LayerControl().add_to(m)
 
-    # Save the map to an HTML file
     map_path = 'map.html'
     m.save(map_path)
-
-    # Read the HTML file and return it as the source for the iframe
     with open(map_path, 'r') as f:
         map_html = f.read()
+    return map_html
 
-    return fig, map_html
+
+# Callback to store the selected value, data, and geojson_data in dcc.Store
+@callback(
+    Output('signal', 'data'),
+    Input('batons', 'value')
+)
+def update_signal(selected_value):
+    if selected_value is None:
+        raise PreventUpdate
+
+    filtered_data, geojson_data = global_store(selected_value)
+
+    return {'selected_value': selected_value, 'filtered_data': filtered_data.to_dict('records'), 'geojson_data': geojson_data}
+
+# Callback to update the graph
+@callback(
+    Output('graf', 'figure'),
+    Input('signal', 'data')
+)
+def update_graph(signal_data):
+    if signal_data is None:
+        raise PreventUpdate
+
+    filtered_data = pd.DataFrame(signal_data['filtered_data'])
+    selected_value = signal_data['selected_value']
+
+    fig = px.histogram(
+        filtered_data, 
+        x='continent',
+        y=selected_value, 
+        histfunc='avg', 
+        height=420,
+        title=f'Histogram for {selected_value}'
+    )
+    return fig
+
+# Callback to update the map
+@callback(
+    Output('map', 'srcDoc'),
+    Input('signal', 'data')
+)
+def update_map(signal_data):
+    if signal_data is None:
+        raise PreventUpdate
+
+    filtered_data = pd.DataFrame(signal_data['filtered_data'])
+    geojson_data = signal_data['geojson_data']
+    selected_value = signal_data['selected_value']
+    map_html = create_choropleth_map(filtered_data, geojson_data, selected_value)
+    return map_html
