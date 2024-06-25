@@ -1,7 +1,10 @@
+
 import dash
 from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
 from sidebar import create_sidebar
+from cache_config import cache
+#import dash_loading_spinners as dls
 
 # CSS styles
 FA621 = 'https://use.fontawesome.com/releases/v6.2.1/css/all.css'
@@ -19,41 +22,24 @@ app = Dash(
     use_pages=True,
 )
 server=app.server
+cache.init_app(server)
 
 # Define the app layout
 app.layout = dcc.Loading(
     id='loading_content',
+    type='dot',
+    overlay_style={'visibility':'visible'},
+    color='#8fbc8f',
     children=[
         dbc.Row([
             dbc.Col(
                 [SIDEBAR],  # Place SIDEBAR here
-                # Adjust sidebar column for different screen sizes
-                xs=12, #extra small screen
-                sm=12, #small screen
-                md=3, #medium screen
-                lg=3, #large screen
-                xl=2, #extra large screen
-                xxl=2  # extra extra large screen
+                className='sidebar-col'
             ),
             dbc.Col([
                 html.Div(
                     dash.page_container,
-                    style={
-                        'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.1)',  # Subtle shadow for better appearance
-                        'padding': '20px',
-                        'background-color': '#add8e6',
-                        'border-radius': '6px',
-                        'margin-top': '20px',
-                        'margin-left': '15px',
-                        'margin-right': '15px',  # Added right margin for consistent spacing
-                        'width': '100%',  # Set width to 100% for responsive design
-                        'height': 'calc(100vh - 60px)',  # Adjust height dynamically
-                        'overflowY': 'auto',  # Enable vertical scrolling if needed
-                        'background-image': "url('assets/mlima.jpg')",
-                        'background-size': 'cover',
-                        'background-repeat': 'no-repeat',
-                        'background-position': 'center'
-                    }
+                    className='landingpage'
                 )
             ], xs=12, sm=12, md=9, lg=9, xl=10, xxl=10)  # Adjust main content column for different screen sizes
         ])
@@ -62,4 +48,4 @@ app.layout = dcc.Loading(
 
 # Run the app
 if __name__ == '__main__':
-    app.run(debug=True, threaded=True, port=8888)
+    app.run()
