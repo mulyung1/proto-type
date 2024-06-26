@@ -1,4 +1,3 @@
-
 from dash import Dash, html, register_page, dcc, callback, Output, Input
 import dash_bootstrap_components as dbc
 import folium
@@ -20,71 +19,66 @@ register_page(
 dff = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
 df = dff[dff['continent'].isin(['Africa', 'Asia', 'Europe', 'Americas', 'Oceania'])]
 
-
 #define the app layout
 def layout():
     return dbc.Container([
         dcc.Store(id='signal'),
-        html.H3('Data and evidence to strengthen baseline assessments, inform interventions and monitor impacts across landscapes', style={'font-weight':'bold'}),
+        html.H3('Let us explore the world via indicators over a period of 43 years since 1957', style={'font-weight':'bold'}),
         dbc.Row([
             dbc.Col([
                 html.Blockquote([
                     html.Strong('Why Python Dash?'),
                     html.Br(),
-                    "Dash, a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions.",
-                ],style={
-                    'width':200,
+                    "Dash, a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions."
+                ], style={
+                    'width': '100%',
                     "border-left": "5px solid #ccc",
                     "margin": "1.5em 10px",
                     "padding": "0.5em 10px",
                     "background-color": "#8fbc8f",
-                    'fontSize':15,
-                    'boxShadow': '0 4px 8px rgba(1, 0.9, 0.8, 0.9)'
-                    }
-                ),
+                    'fontSize': 15,
+                    'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.2)'
+                })
             ])
         ]),
         dbc.Row([
             dbc.Col([
                 html.Div([
-                    html.P('Coming soon',
-                        style={'margin-left': 20, 'fontSize':15}
-                    )
+                    html.P('Coming soon', style={'margin-left': 20, 'fontSize': 15})
                 ], style={
                     'width': '100%',
                     'backgroundColor': '#8fbc8f',
-                    'boxShadow': '0 4px 8px rgba(1, 0.9, 0.8, 0.9)'
+                    'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.2)'
                 }),
                 dcc.RadioItems(
                     options=[
-                        {'label':'Population', 'value':'pop'},
-                        {'label':'Life Expectancy', 'value':'lifeExp'},
-                        {'label':'Gdp Per Cap', 'value':'gdpPercap'},
+                        {'label': 'Population', 'value': 'pop'},
+                        {'label': 'Life Expectancy', 'value': 'lifeExp'},
+                        {'label': 'GDP Per Capita', 'value': 'gdpPercap'}
                     ],
                     value='lifeExp',
                     inline=True,
                     id='batons',
-                    labelStyle={'fontSize':15,'color':'LightGreen'}
+                    labelStyle={'fontSize': 15, 'color': 'LightGreen'}
                 ),
-                dcc.Graph(id='graf'),
+                dcc.Graph(id='graf')
             ], width=6),
             dbc.Col([
                 html.Div([
-                    html.H3('Choropleth Map', style={'textAlign':'center'}),
-                    html.Iframe(id='map', width='100%', height='100%')], 
-                    style={
-                        'width': '100%', 
-                        'height': '57.5%', 
-                        'margin-bottom':40,
-                    }
-                )
-        ])   
+                    html.H3('Choropleth Map', style={'textAlign': 'center'}),
+                    html.Iframe(id='map', width='100%', height='100%')
+                ], style={
+                    'width': '100%',
+                    'height': '57.5%',
+                    'margin-bottom': 40
+                })
+            ])
+        ])
     ], fluid=True, style={
         'height': 'calc(120vh - 60px)',
         'width': '100%',
-        'borderRadius': 6}
-    )
-
+        'borderRadius': 6
+    })
 
 @cache.memoize()
 def global_store(selected_value):
@@ -124,7 +118,6 @@ def create_choropleth_map(data, geojson_data, selected_value):
     with open(map_path, 'r') as f:
         map_html = f.read()
     return map_html
-
 
 # Callback to store the selected value, data, and geojson_data in dcc.Store
 @callback(
