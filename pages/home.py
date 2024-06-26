@@ -7,7 +7,6 @@ import pandas as pd
 import plotly.express as px
 from cache_config import cache
 
-
 register_page(
     __name__,
     name='MGC SOFT SOLNS',
@@ -23,33 +22,21 @@ df = dff[dff['continent'].isin(['Africa', 'Asia', 'Europe', 'Americas', 'Oceania
 def layout():
     return dbc.Container([
         dcc.Store(id='signal'),
-        html.H3('Let us explore the world via indicators over a period of 43 years since 1957', style={'font-weight':'bold'}),
+        html.H3('Let us explore the world via indicators over a period of 43 years since 1957', className='main-heading'),
         dbc.Row([
             dbc.Col([
                 html.Blockquote([
                     html.Strong('Why Python Dash?'),
                     html.Br(),
                     "Dash, a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions."
-                ], style={
-                    'width': '100%',
-                    "border-left": "5px solid #ccc",
-                    "margin": "1.5em 10px",
-                    "padding": "0.5em 10px",
-                    "background-color": "#8fbc8f",
-                    'fontSize': 15,
-                    'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.2)'
-                })
+                ], className='blockquote')
             ])
         ]),
         dbc.Row([
             dbc.Col([
                 html.Div([
-                    html.P('Coming soon', style={'margin-left': 20, 'fontSize': 15})
-                ], style={
-                    'width': '100%',
-                    'backgroundColor': '#8fbc8f',
-                    'boxShadow': '0 4px 8px rgba(0, 0, 0, 0.2)'
-                }),
+                    html.P('Coming soon', className='coming-soon')
+                ], className='coming-soon-div'),
                 dcc.RadioItems(
                     options=[
                         {'label': 'Population', 'value': 'pop'},
@@ -65,20 +52,12 @@ def layout():
             ], width=6),
             dbc.Col([
                 html.Div([
-                    html.H3('Choropleth Map', style={'textAlign': 'center'}),
-                    html.Iframe(id='map', width='100%', height='100%')
-                ], style={
-                    'width': '100%',
-                    'height': '57.5%',
-                    'margin-bottom': 40
-                })
+                    html.H3('Choropleth Map', className='map-heading'),
+                    html.Iframe(id='map', className='map-iframe')
+                ], className='map-div')
             ])
         ])
-    ], fluid=True, style={
-        'height': 'calc(120vh - 60px)',
-        'width': '100%',
-        'borderRadius': 6
-    })
+    ], fluid=True, className='container')
 
 @cache.memoize()
 def global_store(selected_value):
