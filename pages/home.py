@@ -29,9 +29,9 @@ def layout():
         dbc.Row([
             dbc.Col([
                 html.Blockquote([
-                    html.Strong('Why this dashboard?'),
+                    html.Strong('Why Python Dash?'),
                     html.Br(),
-                    "This dashboard was developed in response to the ongoing challenge of increasing the impact of development projects through better-informed project design, by using improved baseline assessments, and through results-based management on the ground.",
+                    "Dash, a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions.",
                 ],style={
                     'width':200,
                     "border-left": "5px solid #ccc",
@@ -47,7 +47,7 @@ def layout():
         dbc.Row([
             dbc.Col([
                 html.Div([
-                    html.P('We use robust, readily measurable, and scientifically rigorous, indicators to assess landscape “ecosystem health” in terms of both biophysical indicators (e.g. soil erosion, soil fertility and vegetation dynamics), and socio-economic indicators. Here, the recent revolution in quality and accessibility of Earth Observation (EO) data presents a major opportunity for smallholder farmers and to development projects. Combining EO data of landscape-level ecosystem health, with field level information on production and household income will result in a leap forward in terms of impact.',
+                    html.P('Coming soon',
                         style={'margin-left': 20, 'fontSize':15}
                     )
                 ], style={
@@ -77,18 +77,7 @@ def layout():
                         'height': '57.5%', 
                         'margin-bottom':40,
                     }
-                ),
-                html.Br(),
-                html.Div([
-                    html.P('Poor rural households are in the front line of climate change impacts and face a series of interconnected natural resource management challenges. The ecosystems and biodiversity on which they rely are increasingly degraded; their access to suitable agricultural land is declining in quantity and quality. The limited capacity of rural people to deal with these challenges is a major hurdle for them to escape from extreme poverty. Evidence-based decision making is critically important if we are to transform the agricultural sector in developing countries, including actionable data and evidence for smallholder farmers to make decisions about their own management interventions.',
-                        style={'margin-left': 20, 'fontSize':15}
-                    )
-                ], style={
-                    'width': '100%',
-                    'backgroundColor': '#8fbc8f',
-                    'boxShadow': '0 4px 8px rgba(1, 0.9, 0.8, 0.9)'
-                })
-            ], width=6)
+                )
         ])   
     ], fluid=True, style={
         'height': 'calc(120vh - 60px)',
