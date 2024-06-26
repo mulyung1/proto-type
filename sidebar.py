@@ -75,7 +75,7 @@ def create_sidebar():
                             dbc.NavLink(
                                 [
                                     html.I(className='fa-brands fa-github'), 
-                                    'GitHub',  # text beside icon
+                                    'Code',  # text beside icon
                                 ],
                                 href='https://github.com/mulyung1/proto-type',
                                 target='_blank_',  # applies to external links only
