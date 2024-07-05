@@ -22,21 +22,18 @@ df = dff[dff['continent'].isin(['Africa', 'Asia', 'Europe', 'Americas', 'Oceania
 def layout():
     return dbc.Container([
         dcc.Store(id='signal'),
-        html.H3('Let us explore the world via indicators over a period of 43 years since 1957', className='main-heading'),
+        html.H2('Let us explore the world - via indicators - over a period of 43 years since 1957'),
         dbc.Row([
             dbc.Col([
                 html.Blockquote([
                     html.Strong('Why Python Dash?'),
                     html.Br(),
                     "Dash, a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions."
-                ], className='blockquote')
+                ], style={'fontSize':15})
             ])
         ]),
         dbc.Row([
             dbc.Col([
-                html.Div([
-                    html.P('Coming soon', className='coming-soon')
-                ], className='coming-soon-div'),
                 dcc.RadioItems(
                     options=[
                         {'label': 'Population', 'value': 'pop'},
@@ -46,18 +43,21 @@ def layout():
                     value='lifeExp',
                     inline=True,
                     id='batons',
-                    labelStyle={'fontSize': 15, 'color': 'LightGreen'}
+                    labelStyle={
+                        'fontSize': 15, 
+                        #'color': 'LightGreen'
+                        }
                 ),
                 dcc.Graph(id='graf')
             ], width=6),
             dbc.Col([
                 html.Div([
-                    html.H3('Choropleth Map', className='map-heading'),
-                    html.Iframe(id='map', className='map-iframe')
-                ], className='map-div')
-            ])
+                    html.H3('Choropleth Map'),
+                    html.Iframe(id='map')
+                ])
+            ], width=6)
         ])
-    ], fluid=True, className='container')
+    ], fluid=True)
 
 @cache.memoize()
 def global_store(selected_value):
