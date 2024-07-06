@@ -7,6 +7,20 @@ import pandas as pd
 import plotly.express as px
 from cache_config import cache
 
+
+# Load the CSV data
+dff = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
+df = dff[dff['continent'].isin(['Africa', 'Asia', 'Europe', 'Americas', 'Oceania'])]
+
+#body of website
+markdownText='''
+## Let us explore the world - via indicators - over a period of 43 years since 1957
+
+**Why Python Dash?**
+
+   > Dash, is a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions.
+'''
+
 register_page(
     __name__,
     name='MGC SOFT SOLNS',
@@ -14,22 +28,13 @@ register_page(
     path='/'
 )
 
-# Load the CSV data
-dff = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/gapminder2007.csv')
-df = dff[dff['continent'].isin(['Africa', 'Asia', 'Europe', 'Americas', 'Oceania'])]
-
 #define the app layout
 def layout():
     return dbc.Container([
         dcc.Store(id='signal'),
-        html.H2('Let us explore the world - via indicators - over a period of 43 years since 1957'),
         dbc.Row([
             dbc.Col([
-                html.Blockquote([
-                    html.Strong('Why Python Dash?'),
-                    html.Br(),
-                    "Dash, a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions."
-                ], style={'fontSize':15})
+                dcc.Markdown(children=markdownText, style={'fontSize':15})
             ])
         ]),
         dbc.Row([
@@ -51,10 +56,8 @@ def layout():
                 dcc.Graph(id='graf')
             ], width=6),
             dbc.Col([
-                html.Div([
                     html.H3('Choropleth Map'),
                     html.Iframe(id='map')
-                ])
             ], width=6)
         ])
     ], fluid=True)

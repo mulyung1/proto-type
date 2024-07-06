@@ -106,6 +106,7 @@ navbar=html.Div(
                 [
                     dbc.NavLink([html.I(className='fa-solid fa-house'), 'Home'],  href='/', active='exact', style={'fontSize':15}),
                     dbc.NavLink([html.I(className='fa-solid fa-folder-open'), 'Project Details'], href='/about', active='exact', style={'fontSize':15}),
+                    dbc.NavLink([html.I(className='fa-solid fa-magnifying-glass-chart'),'Comparative Analysis'], href='/comparative', active='exact', style={'fontSize':15}),
                     dbc.NavLink([html.I(className='fa-brands fa-github'),'Code'], href='https://github.com/mulyung1', active='exact', target='_blank_', style={'fontSize':15}),
                 ],
                 vertical=True,
