@@ -1,4 +1,4 @@
-from dash import Dash, html, register_page, dcc, callback, Output, Input
+from dash import Dash, html, register_page, dcc, callback, Output, Input, dash_table
 import dash_bootstrap_components as dbc
 import folium
 import requests
@@ -19,6 +19,9 @@ markdownText='''
 **Why Python Dash?**
 
    > Dash, is a powerful framework for building interactive web applications with Python. Dash simplifies the process of building dashboards by allowing developers to use Python, a language already familiar to many in the data science and analytics community. Dash applications are easy to deploy, scalable, and can be rendered in any web browser, making them accessible across different platforms. Additionally, Dash’s component-based architecture, combined with its support for callbacks, ensures that applications are dynamic and responsive to user interactions.
+'''
+dataHead='''
+## Data used
 '''
 
 register_page(
@@ -59,7 +62,21 @@ def layout():
                     html.H3('Choropleth Map'),
                     html.Iframe(id='map')
             ], width=6)
-        ])
+        ]),
+        dbc.Row(
+            [
+                dcc.Markdown(children=dataHead, style={'margin-top':'50px'}),
+                html.Hr(),
+                dash_table.DataTable(
+                    data=dff.to_dict('records'),
+                    page_size=11,
+                    style_table={'overflowX':'auto'},
+                    style_data={'backgroundColor':'rgba(58, 123, 151, 0.5)', 'color':'white', 'fontSize':15},
+                    style_header={'backgroundColor':'rgb(199, 11, 105)', 'color':'white','fontWeight':'bold','fontSize':15},
+                    style_cell={'border':'1px solid white'}
+                )
+            ]
+        )
     ], fluid=True)
 
 @cache.memoize()
